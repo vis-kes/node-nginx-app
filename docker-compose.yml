@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./app
+    environment:
+      - MYSQL_HOST=mydb.c7og42gcswcr.ap-south-1.rds.amazonaws.com
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=jyhMyc-turxyv-8tajba
+      - MYSQL_DATABASE=testdb
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: jyhMyc-turxyv-8tajba
+      MYSQL_DATABASE: testdb
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+
+networks:
+  app-network:
+
