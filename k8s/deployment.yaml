@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: 160893303294.dkr.ecr.ap-south-1.amazonaws.com/app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: MYSQL_HOST
+          value: "mydb.c7og42gcswcr.ap-south-1.rds.amazonaws.com"
+        - name: MYSQL_USER
+          value: "admin"
+        - name: MYSQL_PASSWORD
+          value: "jyhMyc-turxyv-8tajba"
+        - name: MYSQL_DATABASE
+          value: "testdb"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: 160893303294.dkr.ecr.ap-south-1.amazonaws.com/nginx:latest
+        ports:
+        - containerPort: 80
+
